@@ -28,7 +28,8 @@ function cargarEventListeners(){
     boton.addEventListener('click', validar);
     boton2.addEventListener('click', borrar);
     input.addEventListener('keypress', filtrarBuscar);
-    card.addEventListener('click', borrarCard);
+    card.addEventListener('click', deleteCard);
+    window.addEventListener('load', getUserInformation);
    
 }
 
@@ -39,6 +40,7 @@ function validar(){
         let id = Date.now();
         let usuario = new Usuarios(nombre.value, apellido.value, user.value, email.value, id);
         usuarios.push(usuario);
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
         mostrarCard();
         console.log(usuarios);
         formulario.reset();
@@ -62,6 +64,7 @@ function validar(){
 }*/
 
 function mostrarCard(){
+    localStorage.getItem('usuarios');    
     let card = document.querySelector('#card');
     card.innerHTML = '';
     usuarios.forEach(usuario => {
@@ -84,9 +87,11 @@ function mostrarCard(){
 }
 
 function borrar(){
-    let card = document.querySelector('#card');
-    card.innerHTML = '';
-    usuarios = [];
+    
+    localStorage.clear();
+    window.location.reload();
+
+
 
 }
 
@@ -128,7 +133,7 @@ function borrarCard(e){
     }
 }
 
-function filtrarBuscar(){
+/*function filtrarBuscar(){
     let buscar = document.querySelector('#busqueda').value;
     let card = document.querySelector('#card');
     if (buscar === ''){
@@ -156,5 +161,69 @@ function filtrarBuscar(){
     });
 }
     
+}*/
+
+
+	
+
+function getUserInformation(){
+    const userInformation = JSON.parse(localStorage.getItem('usuarios'));
+    if(userInformation){
+        usuarios = userInformation;
+        mostrarCard();
+    }   
+
+       
 }
-   
+
+function deleteCard(e){
+    e.preventDefault();
+    if (e.target.classList.contains('btnBorrarCard')){
+        let id = e.target.parentElement.id;
+        const userInformation = JSON.parse(localStorage.getItem('usuarios'));
+        if(userInformation){
+            let usuarios = userInformation.filter(usuario => usuario.id != id);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            location.reload();
+            mostrarCard();
+        }
+
+
+}
+location.reload();
+mostrarCard();
+}
+
+function filtrarBuscar(){
+    const userInformation = JSON.parse(localStorage.getItem('usuarios'));
+    let buscar = document.querySelector('#busqueda').value;
+    let card = document.querySelector('#card');
+    if (buscar === ''){
+        mostrarCard();
+    }
+    else {
+    card.innerHTML = '';
+    if(userInformation){
+        usuarios = userInformation;
+        usuarios.forEach(usuario => {
+            if(usuario.nombre.includes(buscar) || usuario.apellido.includes(buscar) || usuario.user.includes(buscar) || usuario.email.includes(buscar)){
+                const div = document.createElement('div');
+                div.classList.add('col');
+                div.innerHTML = `
+                    <div class="card mb-4 rounded-3 shadow-sm pt-5 pb-5" >
+                        <h5 class="card-title">Nombre: ${usuario.nombre}</h5>
+                        <h5 class="card-title">Apellido:${usuario.apellido}</h5>
+                        <h5 class="card-title">Usuario: ${usuario.user}</h5>
+                        <h5 class="card-title">Email: ${usuario.email}</h5>
+                        <button class="w-20 btn btn-primary btn-sm m-2" id="btnBorrarCard" type="submit">Borrar</button>
+                        <button class="w-20 btn btn-primary btn-sm m-1" id="btnEditar" type="submit">Editar</button>
+                    </div>
+                    
+                `;
+                card.appendChild(div);
+            }
+        });
+
+    }
+}
+}
