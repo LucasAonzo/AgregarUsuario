@@ -133,35 +133,7 @@ function borrarCard(e){
     }
 }
 
-/*function filtrarBuscar(){
-    let buscar = document.querySelector('#busqueda').value;
-    let card = document.querySelector('#card');
-    if (buscar === ''){
-        mostrarCard();
-    }
-    else {
-    card.innerHTML = '';
-    usuarios.forEach(usuario => {
-        if(usuario.nombre.includes(buscar) || usuario.apellido.includes(buscar) || usuario.user.includes(buscar) || usuario.email.includes(buscar)){
-            const div = document.createElement('div');
-            div.classList.add('col');
-            div.innerHTML = `
-                <div class="card mb-4 rounded-3 shadow-sm pt-5 pb-5" >
-                    <h5 class="card-title">Nombre: ${usuario.nombre}</h5>
-                    <h5 class="card-title">Apellido:${usuario.apellido}</h5>
-                    <h5 class="card-title">Usuario: ${usuario.user}</h5>
-                    <h5 class="card-title">Email: ${usuario.email}</h5>
-                    <button class="w-20 btn btn-primary btn-sm m-2" id="btnBorrarCard" type="submit">Borrar</button>
-                    <button class="w-20 btn btn-primary btn-sm m-1" id="btnEditar" type="submit">Editar</button>
-                </div>
-                
-            `;
-            card.appendChild(div);
-        }
-    });
-}
-    
-}*/
+
 
 
 	
@@ -187,10 +159,10 @@ function deleteCard(e){
             location.reload();
             mostrarCard();
         }
-
+      
 
 }
-location.reload();
+
 mostrarCard();
 }
 
@@ -227,3 +199,24 @@ function filtrarBuscar(){
     }
 }
 }
+
+
+boton.addEventListener('click', () => {
+    Toastify({
+        text: "Usuario agregado correctamente",
+        duration: 1500,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+    }).showToast();
+});
+
+
+card.addEventListener('click', () => {
+    Toastify({
+        text: "Usuario eliminado correctamente",
+        duration: 1500,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+    }).showToast();
+});
+
